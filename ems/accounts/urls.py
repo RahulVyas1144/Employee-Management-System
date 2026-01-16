@@ -1,4 +1,6 @@
 from django.urls import path
+from django.shortcuts import redirect
+
 
 from .views import (
     login_view,
@@ -9,7 +11,9 @@ from .views import (
 )
 
 urlpatterns = [
+    path('', lambda request: redirect('/login/')),
     path('login/', login_view, name='login'),
+    
     path('signup/', signup_view, name='signup'),
     path('admin-dashboard/', admin_dashboard, name='admin_dashboard'),
     path('employee-dashboard/', employee_dashboard, name='employee_dashboard'),
