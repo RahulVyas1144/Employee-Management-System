@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-container">
+
+    <div class="sidebar">
+        <h2>Admin</h2>
+        <a href="/dashboard/employees/">Employees</a>
+        <a href="/dashboard/leaves/">Leaves</a>
+        <a href="/dashboard/attendance/">Attendance</a>
+        <a href="/dashboard/payroll/">Payroll</a>
+        <a href="/dashboard/announcements/">Announcements</a>
+    </div>
+
+
+    <div class="dashboard-main">
+        <h1>Admin Dashboard</h1>
+
+        <div class="cards">
+            <div class="card">Total Employees</div>
+            <div class="card">Pending Leaves</div>
+            <div class="card">Payroll</div>
+            <div class="card">Attendance</div>
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

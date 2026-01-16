@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>My Attendance History</h2>
+
+<div class="table-container">
+    <table class="employee-table">
+        <tr>
+            <th>Date</th>
+            <th>Clock In</th>
+            <th>Clock Out</th>
+        </tr>
+
+        {% for att in attendance_list %}
+        <tr>
+            <td>{{ att.date }}</td>
+            <td>{{ att.clock_in|default:"—" }}</td>
+            <td>{{ att.clock_out|default:"—" }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

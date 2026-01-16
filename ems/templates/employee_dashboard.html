@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-container">
+
+    <div class="sidebar">
+        <h2>Employee</h2>
+        <a href="/employee-dashboard/">Dashboard</a>
+        <a href="/employee/leave/apply/">Apply Leave</a>
+        <a href="/employee/leaves/">Leave History</a>
+        <a href="#">Attendance</a>
+        <a href="/employee/payroll/">My Payroll</a>
+        
+    </div>
+    
+
+    <div class="dashboard-main">
+        <h1>Employee Dashboard</h1>
+        <p>Welcome {{ request.user.username }}</p>
+
+        {% if attendance %}
+    <p><strong>Today:</strong></p>
+    <p>Clock In: {{ attendance.clock_in|default:"Not yet" }}</p>
+    <p>Clock Out: {{ attendance.clock_out|default:"Not yet" }}</p>
+{% else %}
+    <p>No attendance marked today.</p>
+{% endif %}
+
+
+        <div class="cards">
+            <div class="card">Pending Leaves</div>
+            <div class="card">Approved Leaves</div>
+            <div class="card">Attendance</div>
+            <div class="card">Payslips</div>
+            {% if not attendance or not attendance.clock_in %}
+<div class="card">
+    <a href="/attendance/clock-in/">Clock In</a>
+</div>
+<div class="card">
+    <a href="/employee/announcements/">Announcements</a>
+</div>
+{% endif %}
+
+{% if attendance and attendance.clock_in and not attendance.clock_out %}
+<div class="card">
+    <a href="/attendance/clock-out/">Clock Out</a>
+</div>
+{% endif %}
+
+<div class="card">
+    <a href="/attendance/history/">Attendance History</a>
+</div>
+
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

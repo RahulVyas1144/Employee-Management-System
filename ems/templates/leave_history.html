@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>My Leave History</h2>
+
+<div class="table-container">
+    <table class="employee-table">
+
+    <tr>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Reason</th>
+        <th>Status</th>
+    </tr>
+
+    {% for leave in leaves %}
+    <tr>
+        <td>{{ leave.start_date }}</td>
+        <td>{{ leave.end_date }}</td>
+        <td>{{ leave.reason }}</td>
+        <td>
+    <span class="status {{ leave.status }}">{{ leave.status }}</span>
+</td>
+
+    </tr>
+    {% endfor %}
+</table>
+</div>
+{% endblock %}

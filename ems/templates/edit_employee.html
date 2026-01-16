@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Edit Employee</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Department</label><br>
+    <input type="text" name="department" value="{{ employee.department }}"><br><br>
+
+    <label>Salary</label><br>
+    <input type="number" name="salary" value="{{ employee.salary }}"><br><br>
+
+    <label>Experience (years)</label><br>
+    <input type="number" name="experience" value="{{ employee.experience }}"><br><br>
+
+    <button type="submit">Update Employee</button>
+</form>
+{% endblock %}

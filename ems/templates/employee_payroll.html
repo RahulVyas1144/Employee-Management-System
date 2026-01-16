@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>My Payroll</h2>
+
+<div class="table-container">
+    <table class="employee-table">
+        <tr>
+            <th>Month</th>
+            <th>Year</th>
+            <th>Basic Salary</th>
+            <th>Deductions</th>
+            <th>Net Salary</th>
+            <th>Payslip</th>
+        </tr>
+
+        {% for p in payrolls %}
+        <tr>
+            <td>{{ p.month }}</td>
+            <td>{{ p.year }}</td>
+            <td>{{ p.basic_salary }}</td>
+            <td>{{ p.deductions }}</td>
+            <td>{{ p.net_salary }}</td>
+            <td>
+    <a href="/payroll/download/{{ p.id }}/">
+    Download
+</a>
+
+</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

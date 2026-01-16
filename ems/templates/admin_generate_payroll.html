@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Generate Payroll</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Employee</label>
+    <select name="employee_id" required>
+        {% for emp in employees %}
+        <option value="{{ emp.id }}">{{ emp.user.username }}</option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+
+    <label>Month</label>
+    <input type="text" name="month" placeholder="January" required>
+
+    <br><br>
+
+    <label>Year</label>
+    <input type="number" name="year" value="2026" required>
+
+    <br><br>
+
+    <label>Deductions</label>
+    <input type="number" name="deductions" value="0">
+
+    <br><br>
+
+    <button type="submit">Generate Payroll</button>
+</form>
+{% endblock %}

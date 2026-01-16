@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>All Employees</h2>
+
+<div class="table-container">
+    <table class="employee-table">
+
+    <tr>
+        <th>Username</th>
+        <th>Department</th>
+        <th>Experience</th>
+        <th>Salary</th>
+    </tr>
+
+    {% for emp in employees %}
+    <tr>
+    <td>{{ emp.user.username }}</td>
+    <td>{{ emp.department }}</td>
+    <td>{{ emp.experience }}</td>
+    <td>{{ emp.salary }}</td>
+    <td>
+    <a href="/dashboard/employees/edit/{{ emp.id }}/">Edit</a> |
+    <a href="/dashboard/employees/delete/{{ emp.id }}/"
+        onclick="return confirm('Are you sure you want to delete this employee?');">
+        Delete
+    </a>
+</td>
+</tr>
+
+    {% endfor %}
+</table>
+</div>
+{% endblock %}
