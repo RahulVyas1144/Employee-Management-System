@@ -1,6 +1,4 @@
-body {
-    padding-top: 60px;
-}
+/* body top padding removed to allow topbar to sit naturally below navbar */
 
 html, body {
     height: 100%;
@@ -290,9 +288,7 @@ html, body {
 
 
 @media (max-width: 768px) {
-    body {
-        padding-top: 60px;
-    }
+    /* mobile body top padding removed; topbar is sticky and managed by layout */
 
     .dashboard-container {
         flex-direction: column;

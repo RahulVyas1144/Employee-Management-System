@@ -1,31 +1,50 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="dashboard-container">
-
-    <div class="sidebar">
-        <h2>Admin</h2>
-        <a href="/dashboard/employees/">Employees</a>
-        <a href="/dashboard/leaves/">Leaves</a>
-        <a href="/dashboard/attendance/">Attendance</a>
-        <a href="/dashboard/payroll/">Payroll</a>
-        <a href="/dashboard/announcements/">Announcements</a>
-    </div>
-
-
-    <div class="dashboard-main">
-        <h1>Admin Dashboard</h1>
-
-        <div class="cards">
-            <div class="card">Total Employees</div>
-            <div class="card">Pending Leaves</div>
-            <div class="card">Payroll</div>
-            <div class="card">Attendance</div>
+<div class="fade-up">
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">Operations overview</p>
+            <h2 class="page-title">Admin dashboard</h2>
+            <p class="page-subtitle">A focused view of team health, leave activity, and payroll readiness.</p>
+        </div>
+        <div class="page-actions">
+            <a class="btn btn-primary" href="/dashboard/announcements/">Publish update</a>
         </div>
     </div>
 
+    <div class="metric-grid">
+        <div class="metric-card">
+            <div class="metric-label">Total employees</div>
+            <div class="metric-value">{{ total_employees }}</div>
+            <div class="metric-trend">Active headcount</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Pending leaves</div>
+            <div class="metric-value">{{ pending_leaves }}</div>
+            <div class="metric-trend">Awaiting manager review</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Payroll cycle</div>
+            <div class="metric-value">{{ payroll_value }}</div>
+            <div class="metric-trend">Latest payroll record</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Attendance rate</div>
+            <div class="metric-value">{{ attendance_rate }}%</div>
+            <div class="metric-trend">{{ employees_present }} present</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="section-header">
+            <h3>Quick access</h3>
+        </div>
+        <div class="page-actions">
+            <a class="btn btn-secondary" href="/dashboard/employees/">Manage employees</a>
+            <a class="btn btn-secondary" href="/dashboard/leaves/">Review leave requests</a>
+            <a class="btn btn-secondary" href="/dashboard/payroll/">Generate payroll</a>
+        </div>
+    </div>
 </div>
-
-
-
 {% endblock %}

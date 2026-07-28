@@ -1,20 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Edit Employee</h2>
+<div class="fade-up">
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">Employee profile</p>
+            <h2 class="page-title">Edit employee details</h2>
+            <p class="page-subtitle">Update the core employee profile without changing the existing workflow.</p>
+        </div>
+    </div>
 
-<form method="post">
-    {% csrf_token %}
+    <div class="form-card">
+        <form method="post" class="form-grid">
+            {% csrf_token %}
 
-    <label>Department</label><br>
-    <input type="text" name="department" value="{{ employee.department }}"><br><br>
+            <div class="floating-field">
+                <input type="text" name="department" id="department" value="{{ employee.department }}" placeholder="Department">
+                <label for="department">Department</label>
+            </div>
 
-    <label>Salary</label><br>
-    <input type="number" name="salary" value="{{ employee.salary }}"><br><br>
+            <div class="floating-field">
+                <input type="number" name="salary" id="salary" value="{{ employee.salary }}" placeholder="Salary">
+                <label for="salary">Salary</label>
+            </div>
 
-    <label>Experience (years)</label><br>
-    <input type="number" name="experience" value="{{ employee.experience }}"><br><br>
+            <div class="floating-field">
+                <input type="number" name="experience" id="experience" value="{{ employee.experience }}" placeholder="Experience">
+                <label for="experience">Experience (years)</label>
+            </div>
 
-    <button type="submit">Update Employee</button>
-</form>
+            <button class="btn btn-primary" type="submit">Update Employee</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

@@ -1,34 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>My Payroll</h2>
+<div class="fade-up">
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">Payroll</p>
+            <h2 class="page-title">My payroll</h2>
+            <p class="page-subtitle">Review earnings, deductions, and downloadable payslips in one place.</p>
+        </div>
+    </div>
 
-<div class="table-container">
-    <table class="employee-table">
-        <tr>
-            <th>Month</th>
-            <th>Year</th>
-            <th>Basic Salary</th>
-            <th>Deductions</th>
-            <th>Net Salary</th>
-            <th>Payslip</th>
-        </tr>
-
-        {% for p in payrolls %}
-        <tr>
-            <td>{{ p.month }}</td>
-            <td>{{ p.year }}</td>
-            <td>{{ p.basic_salary }}</td>
-            <td>{{ p.deductions }}</td>
-            <td>{{ p.net_salary }}</td>
-            <td>
-    <a href="/payroll/download/{{ p.id }}/">
-    Download
-</a>
-
-</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Year</th>
+                    <th>Basic Salary</th>
+                    <th>Deductions</th>
+                    <th>Net Salary</th>
+                    <th>Payslip</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in payrolls %}
+                <tr>
+                    <td>{{ p.month }}</td>
+                    <td>{{ p.year }}</td>
+                    <td>{{ p.basic_salary }}</td>
+                    <td>{{ p.deductions }}</td>
+                    <td>{{ p.net_salary }}</td>
+                    <td><a class="btn btn-secondary" href="/payroll/download/{{ p.id }}/">Download</a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="empty-state">No payroll records yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

@@ -1,25 +1,40 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>All Employees Attendance</h2>
+<div class="fade-up">
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">Attendance</p>
+            <h2 class="page-title">Team attendance</h2>
+            <p class="page-subtitle">Monitor employee check-in and check-out activity.</p>
+        </div>
+    </div>
 
-<div class="table-container">
-    <table class="employee-table">
-        <tr>
-            <th>Employee</th>
-            <th>Date</th>
-            <th>Clock In</th>
-            <th>Clock Out</th>
-        </tr>
-
-        {% for att in attendance_list %}
-        <tr>
-            <td>{{ att.employee.user.username }}</td>
-            <td>{{ att.date }}</td>
-            <td>{{ att.clock_in|default:"—" }}</td>
-            <td>{{ att.clock_out|default:"—" }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Date</th>
+                    <th>Clock In</th>
+                    <th>Clock Out</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for att in attendance_list %}
+                <tr>
+                    <td>{{ att.employee.user.username }}</td>
+                    <td>{{ att.date }}</td>
+                    <td>{{ att.clock_in|default:"—" }}</td>
+                    <td>{{ att.clock_out|default:"—" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="empty-state">No attendance records available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

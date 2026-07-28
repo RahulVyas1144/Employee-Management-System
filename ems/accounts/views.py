@@ -6,7 +6,10 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 from employees.models import EmployeeProfile
+from leave_app.models import Leave
+from payroll.models import Payroll
 
 def login_view(request):
     if request.method == "POST":
@@ -70,10 +73,37 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def admin_dashboard(request):
-    return render(request, 'admin_dashboard.html')
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("Not allowed")
+
+    total_employees = EmployeeProfile.objects.filter(user__is_superuser=False, user__is_active=True).count()
+    pending_leaves = Leave.objects.filter(status='Pending').count()
+
+    today = timezone.localdate()
+    employees_present = Attendance.objects.filter(date=today).values('employee').distinct().count()
+    attendance_rate = 0
+    if total_employees > 0:
+        attendance_rate = round((employees_present / total_employees) * 100)
+
+    latest_payroll = Payroll.objects.order_by('-generated_on').first()
+    if latest_payroll:
+        payroll_value = f"{latest_payroll.month} {latest_payroll.year}"
+    else:
+        payroll_value = 'No payroll yet'
+
+    return render(request, 'admin_dashboard.html', {
+        'total_employees': total_employees,
+        'pending_leaves': pending_leaves,
+        'payroll_value': payroll_value,
+        'attendance_rate': attendance_rate,
+        'employees_present': employees_present,
+    })
 
 @login_required
 def employee_dashboard(request):
+    if request.user.is_superuser:
+        return redirect('/admin-dashboard/')
+
     employee = EmployeeProfile.objects.get(user=request.user)
     today = timezone.now().date()
 

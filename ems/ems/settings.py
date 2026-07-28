@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 import os
+import unicodedata
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -17,6 +18,27 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
+
+
+def _get_env_setting(name, default, *, cast=None):
+    value = os.getenv(name, default)
+    if value is None:
+        return default
+
+    value = unicodedata.normalize('NFKC', str(value)).strip()
+    if value == '':
+        return default
+
+    if cast is int:
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            return default
+
+    if cast is bool:
+        return str(value).lower() in {'1', 'true', 'yes', 'on'}
+
+    return value
 
 
 
@@ -115,7 +137,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "Asia/Kolkata"
 
 USE_I18N = True
 
@@ -130,12 +152,16 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_HOST = _get_env_setting('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = _get_env_setting('EMAIL_PORT', '587', cast=int)
+EMAIL_USE_TLS = _get_env_setting('EMAIL_USE_TLS', 'True', cast=bool)
 
-EMAIL_HOST_USER = 'rahulvyas.1144@gmail.com'
-EMAIL_HOST_PASSWORD = 'jfzhvgnnblngxfxq'
+EMAIL_HOST_USER = _get_env_setting('EMAIL_HOST_USER', 'rahulvyas.1144@gmail.com')
+EMAIL_HOST_PASSWORD = _get_env_setting('EMAIL_HOST_PASSWORD', 'ydtvbqwqjhwkhlpw')
+
+print(f"[EMAIL DEBUG] EMAIL_HOST={EMAIL_HOST}")
+print(f"[EMAIL DEBUG] EMAIL_PORT={EMAIL_PORT}")
+print(f"[EMAIL DEBUG] EMAIL_HOST_USER={EMAIL_HOST_USER}")
 
 
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -143,9 +169,6 @@ if not SECRET_KEY:
     raise Exception("SECRET_KEY not loaded from .env")
 
 DEBUG = os.getenv('DEBUG') == 'True'
-
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 
 LOGIN_URL = '/login/'

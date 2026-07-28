@@ -1,25 +1,54 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Sign in to your account</h2>
+<div class="auth-shell">
+    <div class="auth-panel fade-up">
+        <div class="auth-side">
+            <div>
+                <p class="eyebrow">Secure access</p>
+                <h2 style="margin:10px 0 8px; font-size:1.8rem;">Welcome back to your HR workspace</h2>
+                <p style="margin:0; color:var(--muted);">Sign in to continue managing people, payroll, attendance, and leave requests.</p>
+            </div>
 
-<div class="form-container">
-    <h2>Sign in to your account</h2>
+            <form method="post" style="margin-top:24px; display:grid; gap:16px;">
+                {% csrf_token %}
 
-    <form method="post">
-        {% csrf_token %}
+                <div class="floating-field">
+                    <input type="text" name="username" id="username" placeholder="Username" required>
+                    <label for="username">Username</label>
+                </div>
 
-        <label>Username</label>
-        <input type="text" name="username" required>
+                <div class="floating-field">
+                    <input type="password" name="password" id="password" placeholder="Password" required>
+                    <label for="password">Password</label>
+                </div>
 
-        <label>Password</label>
-        <input type="password" name="password" required>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Remember me</label>
+                </div>
 
-        <button type="submit">Login</button>
-    </form>
+                <button class="btn btn-primary" type="submit">Login</button>
+            </form>
 
-    <p>Don't have an account? <a href="/signup/">Sign up</a></p>
+            <div class="link-row">
+                <a href="/signup/">Create an account</a>
+                <a href="#">Forgot password?</a>
+            </div>
+        </div>
+
+        <div class="auth-illustration">
+            <div>
+                <p class="eyebrow">EMS HRMS</p>
+                <h2>Modern employee operations, beautifully organized.</h2>
+                <p>From onboarding to offboarding, keep your team connected with a secure and intuitive experience.</p>
+            </div>
+            <ul class="auth-list">
+                <li>✓ Streamlined attendance</li>
+                <li>✓ Approval-ready leave management</li>
+                <li>✓ Payroll visibility and reporting</li>
+            </ul>
+        </div>
+    </div>
 </div>
-
-
 {% endblock %}

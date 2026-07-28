@@ -1,30 +1,53 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Create Employee Account</h2>
+<div class="auth-shell">
+    <div class="auth-panel fade-up">
+        <div class="auth-side">
+            <div>
+                <p class="eyebrow">New account</p>
+                <h2 style="margin:10px 0 8px; font-size:1.8rem;">Create your employee account</h2>
+                <p style="margin:0; color:var(--muted);">Set up your credentials to access the HR portal and your personalized dashboard.</p>
+            </div>
 
-<div class="form-container">
-    <h2>Create Employee Account</h2>
+            <form method="post" style="margin-top:24px; display:grid; gap:16px;">
+                {% csrf_token %}
 
-    <form method="post">
-        {% csrf_token %}
+                <div class="floating-field">
+                    <input type="text" name="username" id="signup-username" placeholder="Username" required>
+                    <label for="signup-username">Username</label>
+                </div>
 
-        <label>Username</label>
-        <input type="text" name="username" required>
+                <div class="floating-field">
+                    <input type="email" name="email" id="signup-email" placeholder="Email" required>
+                    <label for="signup-email">Email</label>
+                </div>
 
-        <label>Email</label>
-        <input type="email" name="email" required>
+                <div class="floating-field">
+                    <input type="password" name="password" id="signup-password" placeholder="Password" required>
+                    <label for="signup-password">Password</label>
+                </div>
 
-        <label>Password</label>
-        <input type="password" name="password" required>
+                <div class="floating-field">
+                    <input type="password" name="confirm_password" id="signup-confirm" placeholder="Confirm Password" required>
+                    <label for="signup-confirm">Confirm Password</label>
+                </div>
 
-        <label>Confirm Password</label>
-        <input type="password" name="confirm_password" required>
+                <button class="btn btn-primary" type="submit">Create Account</button>
+            </form>
 
-        <button type="submit">Sign Up</button>
-    </form>
+            <div class="link-row">
+                <a href="/login/">Already have an account?</a>
+            </div>
+        </div>
 
-    <p>Already have an account? <a href="/login/">Login</a></p>
+        <div class="auth-illustration">
+            <div>
+                <p class="eyebrow">People operations</p>
+                <h2>Streamlined onboarding and secure access.</h2>
+                <p>Give employees a modern experience from day one with a polished self-service portal.</p>
+            </div>
+        </div>
+    </div>
 </div>
-
 {% endblock %}

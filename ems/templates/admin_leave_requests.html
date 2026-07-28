@@ -1,36 +1,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Leave Requests</h2>
+<div class="fade-up">
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">Leave management</p>
+            <h2 class="page-title">Leave requests</h2>
+            <p class="page-subtitle">Approvals and rejections remain fully functional behind the new interface.</p>
+        </div>
+    </div>
 
-<div class="table-container">
-    <table class="employee-table">
-
-    <tr>
-        <th>Employee</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Reason</th>
-        <th>Status</th>
-        <th>Action</th>
-    </tr>
-
-    {% for leave in leaves %}
-    <tr>
-        <td>{{ leave.employee.user.username }}</td>
-        <td>{{ leave.start_date }}</td>
-        <td>{{ leave.end_date }}</td>
-        <td>{{ leave.reason }}</td>
-        <td>
-    <span class="status {{ leave.status }}">{{ leave.status }}</span>
-</td>
-
-        <td>
-            <a href="/dashboard/leaves/approve/{{ leave.id }}/">Approve</a> |
-            <a href="/dashboard/leaves/reject/{{ leave.id }}/">Reject</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in leaves %}
+                <tr>
+                    <td>{{ leave.employee.user.username }}</td>
+                    <td>{{ leave.start_date }}</td>
+                    <td>{{ leave.end_date }}</td>
+                    <td>{{ leave.reason }}</td>
+                    <td><span class="status-badge status-{{ leave.status|lower }}">{{ leave.status }}</span></td>
+                    <td>
+                        <div class="page-actions">
+                            <a class="btn btn-secondary" href="/dashboard/leaves/approve/{{ leave.id }}/">Approve</a>
+                            <a class="btn btn-danger" href="/dashboard/leaves/reject/{{ leave.id }}/">Reject</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="empty-state">No leave requests available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

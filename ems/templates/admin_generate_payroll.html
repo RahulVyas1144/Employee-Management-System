@@ -1,35 +1,178 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Generate Payroll</h2>
+<div class="fade-up">
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">Payroll</p>
+            <h2 class="page-title">Generate payroll</h2>
+            <p class="page-subtitle">Create a payroll entry using the same backend workflow.</p>
+        </div>
+    </div>
 
-<form method="post">
-    {% csrf_token %}
+    <div class="form-card">
+        <form method="post" id="payrollForm" class="form-grid">
+            {% csrf_token %}
 
-    <label>Employee</label>
-    <select name="employee_id" required>
-        {% for emp in employees %}
-        <option value="{{ emp.id }}">{{ emp.user.username }}</option>
-        {% endfor %}
-    </select>
+            <div class="floating-field">
+                <select name="employee_id" id="employee_id" required>
+                    {% for emp in employees %}
+                    <option value="{{ emp.id }}">{{ emp.user.username }}</option>
+                    {% endfor %}
+                </select>
+                <label for="employee_id">Employee</label>
+            </div>
 
-    <br><br>
+            <div class="floating-field">
+                <input type="text" name="month" id="month" placeholder="January" required>
+                <label for="month">Month</label>
+            </div>
 
-    <label>Month</label>
-    <input type="text" name="month" placeholder="January" required>
+            <div class="floating-field">
+                <input type="number" name="year" id="year" value="2026" required>
+                <label for="year">Year</label>
+            </div>
 
-    <br><br>
+            <h3>Salary Components</h3>
+            <div class="floating-field">
+                <input type="number" id="basic_salary" name="basic_salary" readonly>
+                <label for="basic_salary">Basic Salary</label>
+            </div>
+            <div class="floating-field">
+                <input type="number" id="hra" name="hra" readonly>
+                <label for="hra">HRA</label>
+            </div>
+            <div class="floating-field">
+                <input type="number" id="da" name="da" readonly>
+                <label for="da">DA</label>
+            </div>
+            <div class="floating-field">
+                <input type="number" id="other_allowances" name="other_allowances" readonly>
+                <label for="other_allowances">Other Allowances</label>
+            </div>
 
-    <label>Year</label>
-    <input type="number" name="year" value="2026" required>
+            <h3>Adjustments</h3>
+            <div class="floating-field">
+                <input type="number" id="bonus" name="bonus" value="0" step="0.01">
+                <label for="bonus">Bonus</label>
+            </div>
+            <div class="floating-field">
+                <input type="number" id="incentive" name="incentive" value="0" step="0.01">
+                <label for="incentive">Incentive</label>
+            </div>
 
-    <br><br>
+            <h3>Deductions</h3>
+            <div class="floating-field">
+                <input type="number" id="tax" name="tax" value="0" step="0.01">
+                <label for="tax">Tax</label>
+            </div>
+            <div class="floating-field">
+                <input type="number" id="pf" name="pf" value="0" step="0.01">
+                <label for="pf">Provident Fund</label>
+            </div>
+            <div class="floating-field">
+                <input type="number" id="esi" name="esi" value="0" step="0.01">
+                <label for="esi">ESI</label>
+            </div>
+            <div class="floating-field">
+                <input type="number" id="other_deduction" name="other_deduction" value="0" step="0.01">
+                <label for="other_deduction">Other Deductions</label>
+            </div>
 
-    <label>Deductions</label>
-    <input type="number" name="deductions" value="0">
+            <h3>Summary</h3>
+            <div class="floating-field">
+                <input type="number" id="gross" name="gross" readonly>
+                <label for="gross">Gross Salary</label>
+            </div>
+            <div class="floating-field">
+                <input type="number" id="total_deductions" name="total_deductions" readonly>
+                <label for="total_deductions">Total Deductions</label>
+            </div>
+            <div class="floating-field">
+                <input type="number" id="net_salary" name="net_salary" readonly>
+                <label for="net_salary">Net Salary</label>
+            </div>
 
-    <br><br>
+            <button class="btn btn-primary" type="submit">Generate Payroll</button>
+        </form>
+    </div>
 
-    <button type="submit">Generate Payroll</button>
-</form>
+    <script>
+    (function(){
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        const employeeEl = document.getElementById('employee_id');
+        const monthEl = document.getElementById('month');
+        const yearEl = document.getElementById('year');
+
+        const basicEl = document.getElementById('basic_salary');
+        const hraEl = document.getElementById('hra');
+        const daEl = document.getElementById('da');
+        const otherAllowEl = document.getElementById('other_allowances');
+
+        const bonusEl = document.getElementById('bonus');
+        const incentiveEl = document.getElementById('incentive');
+
+        const taxEl = document.getElementById('tax');
+        const pfEl = document.getElementById('pf');
+        const esiEl = document.getElementById('esi');
+        const otherDedEl = document.getElementById('other_deduction');
+
+        const grossEl = document.getElementById('gross');
+        const totalDedEl = document.getElementById('total_deductions');
+        const netEl = document.getElementById('net_salary');
+
+        function recalc(){
+            const basic = parseFloat(basicEl.value||0);
+            const hra = parseFloat(hraEl.value||0);
+            const da = parseFloat(daEl.value||0);
+            const otherAllow = parseFloat(otherAllowEl.value||0);
+            const bonus = parseFloat(bonusEl.value||0);
+            const incentive = parseFloat(incentiveEl.value||0);
+            const tax = parseFloat(taxEl.value||0);
+            const pf = parseFloat(pfEl.value||0);
+            const esi = parseFloat(esiEl.value||0);
+            const otherDed = parseFloat(otherDedEl.value||0);
+
+            const gross = basic + hra + da + otherAllow + bonus + incentive;
+            const totalDeductions = tax + pf + esi + otherDed;
+            const net = gross - totalDeductions;
+
+            grossEl.value = gross.toFixed(2);
+            totalDedEl.value = totalDeductions.toFixed(2);
+            netEl.value = net.toFixed(2);
+        }
+
+        async function loadData(){
+            const fd = new FormData();
+            fd.append('csrfmiddlewaretoken', csrftoken);
+            fd.append('action','load');
+            fd.append('employee_id', employeeEl.value);
+            fd.append('month', monthEl.value);
+            fd.append('year', yearEl.value);
+
+            const resp = await fetch(window.location.href, { method: 'POST', body: fd });
+            if (!resp.ok) return;
+            const data = await resp.json();
+            if (data.error) return;
+
+            basicEl.value = data.salary.basic_salary || 0;
+            hraEl.value = data.salary.hra || 0;
+            daEl.value = data.salary.da || 0;
+            otherAllowEl.value = data.salary.other_allowances || 0;
+
+            recalc();
+        }
+
+        employeeEl.addEventListener('change', loadData);
+        monthEl.addEventListener('change', loadData);
+        yearEl.addEventListener('change', loadData);
+
+        [bonusEl,incentiveEl,taxEl,pfEl,esiEl,otherDedEl].forEach(el=>el.addEventListener('input', recalc));
+
+        // initial load
+        window.addEventListener('load', loadData);
+    })();
+    </script>
+</div>
 {% endblock %}

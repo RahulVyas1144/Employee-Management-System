@@ -1,60 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="dashboard-container">
-
-    <div class="sidebar">
-        <h2>Employee</h2>
-        <a href="/employee-dashboard/">Dashboard</a>
-        <a href="/employee/leave/apply/">Apply Leave</a>
-        <a href="/employee/leaves/">Leave History</a>
-        <a href="#">Attendance</a>
-        <a href="/employee/payroll/">My Payroll</a>
-        
-    </div>
-    
-
-    <div class="dashboard-main">
-        <h1>Employee Dashboard</h1>
-        <p>Welcome {{ request.user.username }}</p>
-
-        {% if attendance %}
-    <p><strong>Today:</strong></p>
-    <p>Clock In: {{ attendance.clock_in|default:"Not yet" }}</p>
-    <p>Clock Out: {{ attendance.clock_out|default:"Not yet" }}</p>
-{% else %}
-    <p>No attendance marked today.</p>
-{% endif %}
-
-
-        <div class="cards">
-            <div class="card">Pending Leaves</div>
-            <div class="card">Approved Leaves</div>
-            <div class="card">Attendance</div>
-            <div class="card">Payslips</div>
-            {% if not attendance or not attendance.clock_in %}
-<div class="card">
-    <a href="/attendance/clock-in/">Clock In</a>
-</div>
-<div class="card">
-    <a href="/employee/announcements/">Announcements</a>
-</div>
-{% endif %}
-
-{% if attendance and attendance.clock_in and not attendance.clock_out %}
-<div class="card">
-    <a href="/attendance/clock-out/">Clock Out</a>
-</div>
-{% endif %}
-
-<div class="card">
-    <a href="/attendance/history/">Attendance History</a>
-</div>
-
-
+<div class="fade-up">
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">Welcome back</p>
+            <h2 class="page-title">Hello, {{ request.user.username }}</h2>
+            <p class="page-subtitle">Here’s a polished overview of your attendance, leave status, and payroll details.</p>
         </div>
     </div>
 
-</div>
+    <div class="metric-grid">
+        <div class="metric-card">
+            <div class="metric-label">Today’s attendance</div>
+            <div class="metric-value">{% if attendance %}{{ attendance.clock_in|default:"Pending" }}{% else %}Not started{% endif %}</div>
+            <div class="metric-trend">Clock in or out with one click.</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Leave status</div>
+            <div class="metric-value">Current</div>
+            <div class="metric-trend">Apply and track leave requests.</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Payroll access</div>
+            <div class="metric-value">Available</div>
+            <div class="metric-trend">Download payslips securely.</div>
+        </div>
+    </div>
 
+    <div class="card">
+        <div class="section-header">
+            <h3>Quick actions</h3>
+        </div>
+        <div class="page-actions">
+            {% if not attendance or not attendance.clock_in %}
+                <a class="btn btn-primary" href="/attendance/clock-in/">Mark Attendance</a>
+            {% endif %}
+            {% if attendance and attendance.clock_in and not attendance.clock_out %}
+                <a class="btn btn-primary" href="/attendance/clock-out/">Clock Out</a>
+            {% endif %}
+            <a class="btn btn-secondary" href="/employee/leave/apply/">Apply for Leave</a>
+            <a class="btn btn-secondary" href="/employee/payroll/">My Payroll</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

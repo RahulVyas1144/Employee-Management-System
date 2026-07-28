@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
@@ -11,7 +12,7 @@ from .models import Announcement
 @login_required
 def create_announcement(request):
     if not request.user.is_superuser:
-        return redirect('/')
+        return HttpResponseForbidden("Not allowed")
 
     if request.method == "POST":
         title = request.POST.get('title')
@@ -23,6 +24,10 @@ def create_announcement(request):
         )
 
         emails = User.objects.values_list('email', flat=True)
+
+        print(f"[EMAIL DEBUG] EMAIL_HOST={settings.EMAIL_HOST}")
+        print(f"[EMAIL DEBUG] EMAIL_PORT={settings.EMAIL_PORT}")
+        print(f"[EMAIL DEBUG] EMAIL_HOST_USER={settings.EMAIL_HOST_USER}")
 
         send_mail(
             subject=title,

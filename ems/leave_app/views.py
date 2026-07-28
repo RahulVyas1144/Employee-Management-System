@@ -52,6 +52,10 @@ def approve_leave(request, leave_id):
     leave.status = 'Approved'
     leave.save()
 
+    print(f"[EMAIL DEBUG] EMAIL_HOST={settings.EMAIL_HOST}")
+    print(f"[EMAIL DEBUG] EMAIL_PORT={settings.EMAIL_PORT}")
+    print(f"[EMAIL DEBUG] EMAIL_HOST_USER={settings.EMAIL_HOST_USER}")
+
     send_mail(
     subject='Leave Approved',
     message=f'Hi {leave.employee.user.username}, your leave has been APPROVED.',
@@ -71,6 +75,10 @@ def reject_leave(request, leave_id):
     leave = get_object_or_404(Leave, id=leave_id)
     leave.status = 'Rejected'
     leave.save()
+
+    print(f"[EMAIL DEBUG] EMAIL_HOST={settings.EMAIL_HOST}")
+    print(f"[EMAIL DEBUG] EMAIL_PORT={settings.EMAIL_PORT}")
+    print(f"[EMAIL DEBUG] EMAIL_HOST_USER={settings.EMAIL_HOST_USER}")
 
     send_mail(
     subject='Leave Rejected',

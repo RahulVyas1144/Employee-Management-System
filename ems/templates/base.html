@@ -1,83 +1,94 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>EMS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMS | Employee Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/modern.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-
 </head>
 <body>
+    <div class="app-shell">
+        <aside class="sidebar" data-sidebar>
+            <div class="brand">
+                <div class="brand-badge">E</div>
+                <div>
+                    <h2>EMS HR Suite</h2>
+                    <p>Enterprise Workspace</p>
+                </div>
+            </div>
 
-<!-- Navbar -->
-<div class="navbar">
-    <div class="nav-left">
-        <span class="logo">EMS</span>
+            <nav class="sidebar-nav">
+                {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                        <a class="active" href="/admin-dashboard/"><span>◉</span> Dashboard</a>
+                        <a href="/dashboard/employees/"><span>◉</span> Employees</a>
+                        <a href="/dashboard/attendance/"><span>◉</span> Attendance</a>
+                        <a href="/dashboard/payroll/"><span>◉</span> Payroll</a>
+                        <a href="/dashboard/leaves/"><span>◉</span> Leave Management</a>
+                        <a href="/dashboard/announcements/"><span>◉</span> Announcements</a>
+                        <a href="/logout/"><span>◉</span> Logout</a>
+                    {% else %}
+                        <a class="active" href="/employee-dashboard/"><span>◉</span> Dashboard</a>
+                        <a href="/employee/leave/apply/"><span>◉</span> Apply Leave</a>
+                        <a href="/attendance/clock-in/"><span>◉</span> Mark Attendance</a>
+                        <a href="/employee/payroll/"><span>◉</span> My Payroll</a>
+                        <a href="/logout/"><span>◉</span> Logout</a>
+                    {% endif %}
+                {% else %}
+                    <a class="active" href="/"><span>◉</span> Home</a>
+                    <a href="/login/"><span>◉</span> Login</a>
+                    <a href="/signup/"><span>◉</span> Sign Up</a>
+                {% endif %}
+            </nav>
+
+            <div class="sidebar-footer">
+                <strong>People-first operations</strong>
+                <p>Reliable HR workflows with a polished experience.</p>
+            </div>
+        </aside>
+
+        <main class="main-panel">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-nav-toggle" data-sidebar-toggle aria-label="Toggle navigation">☰</button>
+                    <div class="breadcrumb">
+                        <span>Home</span>
+                        <span>/</span>
+                        <span class="active">{% if user.is_superuser %}Admin Dashboard{% else %}Employee Workspace{% endif %}</span>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                        <div class="profile-pill">
+                        <div class="profile-avatar">{{ user.username|first|upper|default:'U' }}</div>
+                        <div>
+                            <div style="font-weight:600;">{{ user.username|default:'Guest' }}</div>
+                            <div style="font-size:0.78rem;color:var(--muted);">
+                                {% if user.is_superuser %}HR Administrator{% else %}Employee{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="content-area">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success fade-up">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                {% block content %}{% endblock %}
+            </section>
+        </main>
     </div>
 
-    <div class="nav-right">
-        <a href="/">Home</a>
-
-        {% if user.is_authenticated %}
-
-            {% if user.is_superuser %}
-                <a href="/admin-dashboard/">Dashboard</a>
-            {% else %}
-                <a href="/employee-dashboard/">Dashboard</a>
-            {% endif %}
-
-            <a href="/logout/">Logout</a>
-
-        {% else %}
-            <a href="/login/">Login</a>
-            <a href="/signup/">Sign Up</a>
-        {% endif %}
-    </div>
-</div>
-
-
-<!-- Page Content -->
-<div class="container">
-    {% if messages %}
-    {% for message in messages %}
-        <p style="color: green;">{{ message }}</p>
-    {% endfor %}
-{% endif %}
-
-    {% block content %}
-    {% endblock %}
-</div>
-
-<!-- Footer -->
-<footer class="footer">
-    <div class="footer-container">
-
-        <div class="footer-section">
-            <h3>Employee Management System</h3>
-            <p>Manage employees, leaves, payroll and attendance efficiently.</p>
-        </div>
-
-        <div class="footer-section">
-            <h4>Quick Links</h4>
-            <a href="/">Home</a>
-            <a href="/login/">Login</a>
-            <a href="/signup/">Sign Up</a>
-        </div>
-
-        <div class="footer-section">
-            <h4>Support</h4>
-            <a href="#">Help</a>
-            <a href="#">Documentation</a>
-            <a href="#">Contact</a>
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
-        © 2026 Employee Management System. All rights reserved.
-    </div>
-</footer>
-
-
+    <script src="{% static 'js/modern.js' %}"></script>
 </body>
 </html>

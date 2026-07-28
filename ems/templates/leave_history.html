@@ -1,29 +1,40 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>My Leave History</h2>
+<div class="fade-up">
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">Leave overview</p>
+            <h2 class="page-title">Leave history</h2>
+            <p class="page-subtitle">Track the status of every leave request at a glance.</p>
+        </div>
+    </div>
 
-<div class="table-container">
-    <table class="employee-table">
-
-    <tr>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Reason</th>
-        <th>Status</th>
-    </tr>
-
-    {% for leave in leaves %}
-    <tr>
-        <td>{{ leave.start_date }}</td>
-        <td>{{ leave.end_date }}</td>
-        <td>{{ leave.reason }}</td>
-        <td>
-    <span class="status {{ leave.status }}">{{ leave.status }}</span>
-</td>
-
-    </tr>
-    {% endfor %}
-</table>
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in leaves %}
+                <tr>
+                    <td>{{ leave.start_date }}</td>
+                    <td>{{ leave.end_date }}</td>
+                    <td>{{ leave.reason }}</td>
+                    <td><span class="status-badge status-{{ leave.status|lower }}">{{ leave.status }}</span></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="empty-state">No leave requests found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

@@ -1,21 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Create Announcement</h2>
+<div class="fade-up">
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">Communications</p>
+            <h2 class="page-title">Create announcement</h2>
+            <p class="page-subtitle">Publish updates that keep the team aligned.</p>
+        </div>
+    </div>
 
-<form method="post">
-    {% csrf_token %}
+    <div class="form-card">
+        <form method="post" class="form-grid">
+            {% csrf_token %}
 
-    <label>Title</label>
-    <input type="text" name="title" required>
+            <div class="floating-field">
+                <input type="text" name="title" id="title" placeholder="Title" required>
+                <label for="title">Title</label>
+            </div>
 
-    <br><br>
+            <div class="floating-field">
+                <textarea name="message" id="message" rows="5" placeholder="Message" required></textarea>
+                <label for="message">Message</label>
+            </div>
 
-    <label>Message</label>
-    <textarea name="message" rows="5" required></textarea>
-
-    <br><br>
-
-    <button type="submit">Publish</button>
-</form>
+            <button class="btn btn-primary" type="submit">Publish</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

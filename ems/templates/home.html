@@ -1,6 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Employee Management System</h1>
-<p>Manage employees, payroll, attendance, and leaves efficiently.</p>
+<div class="hero-card fade-up">
+    <div>
+        <p class="eyebrow">Enterprise HRMS</p>
+        <h1>Modern employee operations for a growing company.</h1>
+        <p>Manage workforce records, leave approvals, attendance, and payroll from one elegant workspace designed for scale.</p>
+        <div class="page-actions">
+            <a class="btn btn-primary" href="/login/">Access Portal</a>
+            <a class="btn btn-secondary" href="/signup/">Create Account</a>
+        </div>
+    </div>
+    <div class="hero-panel">
+        <h3 style="margin:0 0 8px;">What’s included</h3>
+        <p style="margin:0 0 16px; color:#dbeafe;">A premium employee experience with leadership-ready insights.</p>
+        <ul class="auth-list">
+            <li>✓ Attendance controls</li>
+            <li>✓ Leave workflows</li>
+            <li>✓ Payroll visibility</li>
+            <li>✓ Team announcements</li>
+        </ul>
+    </div>
+</div>
 {% endblock %}

@@ -10,7 +10,8 @@ def clock_in(request):
         return redirect('/')
 
     employee = EmployeeProfile.objects.get(user=request.user)
-    today = timezone.now().date()
+    local_now = timezone.localtime(timezone.now())
+    today = local_now.date()
 
     attendance, created = Attendance.objects.get_or_create(
         employee=employee,
@@ -18,7 +19,7 @@ def clock_in(request):
     )
 
     if attendance.clock_in is None:
-        attendance.clock_in = timezone.now().time()
+        attendance.clock_in = local_now.time()
         attendance.save()
 
     return redirect('/employee-dashboard/')
@@ -31,7 +32,8 @@ def clock_out(request):
         return redirect('/')
 
     employee = EmployeeProfile.objects.get(user=request.user)
-    today = timezone.now().date()
+    local_now = timezone.localtime(timezone.now())
+    today = local_now.date()
 
     attendance = Attendance.objects.filter(
         employee=employee,
@@ -39,7 +41,7 @@ def clock_out(request):
     ).first()
 
     if attendance and attendance.clock_out is None:
-        attendance.clock_out = timezone.now().time()
+        attendance.clock_out = local_now.time()
         attendance.save()
 
     return redirect('/employee-dashboard/')
@@ -62,10 +64,12 @@ def attendance_history(request):
     })
 
 
+from django.http import HttpResponseForbidden
+
 @login_required
 def admin_attendance(request):
     if not request.user.is_superuser:
-        return redirect('/')
+        return HttpResponseForbidden("Not allowed")
 
     attendance_list = Attendance.objects.select_related(
         'employee', 'employee__user'
